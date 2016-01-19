@@ -142,15 +142,15 @@ class Transport
             return ['code' => 1];
         }
 
-        $phones = (array)$phones;
-        if (!isset($params['action'])) {
-            $params['action'] = 'send';
-        }
-
         $someXML = '';
+        $phones = (array)$phones;
 
         if (!is_array($params)) {
-            $params['text'] = $params;
+            $params = ['text' => $params];
+        }
+
+        if (!isset($params['action'])) {
+            $params['action'] = 'send';
         }
 
         if (isset($params['text'])) {
@@ -180,9 +180,11 @@ class Transport
         }
 
         $result = $this->request('send', $params, $someXML);
-        if ($this->get($result, 'code') != 1) {
+
+        $code = $this->get($result, 'code');
+        if ($code != 1 || $code != 517) {
             $return = [
-                'code'  => $this->get($result, 'code'),
+                'code'  => $code,
                 'descr' => $this->get($result, 'descr')
             ];
         } else {

@@ -182,7 +182,7 @@ class Transport
         $result = $this->request('send', $params, $someXML);
 
         $code = $this->get($result, 'code');
-        if (!($code == 1 || $code == 517)) {
+        if (!($code == '' || $code == 1 || $code == 517)) {
             $return = [
                 'code'  => $code,
                 'descr' => $this->get($result, 'descr')

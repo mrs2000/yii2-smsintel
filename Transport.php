@@ -143,7 +143,6 @@ class Transport
         }
 
         $someXML = '';
-        $phones = (array)$phones;
 
         if (!is_array($params)) {
             $params = ['text' => $params];
@@ -161,11 +160,15 @@ class Transport
             $params['onlydelivery'] = $this->onlydelivery;
         }
 
-        if (!isset($params['use_alfasource'])) {
-            $params['use_alfasource'] = $this->use_alfasource;
+        if (!isset($params['source']) && $this->source) {
+            $params['source'] = $this->source;
         }
 
-        foreach ($phones as $phone) {
+        if (!isset($params['channel'])) {
+            $params['channel'] = 0;
+        }
+
+        foreach ((array)$phones as $phone) {
             if (is_array($phone)) {
                 if (isset($phone['number'])) {
                     $someXML .= '<to number="'.$phone['number'].'">';
